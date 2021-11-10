@@ -6,7 +6,9 @@
     "build": "npm run clean && tsnd build-core/index.ts --respawn",
     "clean": "rimraf dist",
     "publish": "wrangler publish",
-    "dev": "set NODE_ENV=development && wrangler dev"
+    "dev": "set NODE_ENV=development && wrangler dev",
+    "login": "wrangler login",
+    "config": "wrangler config"
   },
   "dependencies": {
     "@cloudflare/kv-asset-handler": "^0.1.3",
