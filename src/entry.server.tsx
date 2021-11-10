@@ -2,7 +2,6 @@ import ReactDOMServer from 'react-dom/server'
 import { StaticRouter, Route } from 'react-router-dom'
 import { routes } from './router'
 import { matchRoutes } from 'react-router-config'
-import consola from 'consola'
 
 export async function render(url: string, events: any) {
   const { pathname } = new URL(url);
@@ -17,8 +16,8 @@ export async function render(url: string, events: any) {
       <MatchedComponent data={initialData}/>
     </StaticRouter>
   )
-  // @ts-ignore
-  const template = process.SSR.html
+  // @ts-ignore: 编译时替换
+  const template = __HTML_CONTENT__
   return template
     .replace(
       '<!-- ssr-out-let -->',

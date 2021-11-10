@@ -12,13 +12,16 @@ import { SERVER_OUTPUT_MODULE_PATH_NAME, CWD, mode } from './config'
 const start = async () => {
 	const viteConfig = await resolveConfig({}, "build", "production");
 	const { clientViteConfig, buildResult } = await buildClient(viteConfig);
-	const serverViteConfig = await buildServer(
+	const {
+		serverViteConfig,
+		htmlContent
+	} = await buildServer(
 		viteConfig,
 		buildResult as RollupOutput,
 		clientViteConfig
 	);
 	await generatePkgJson(viteConfig, clientViteConfig, serverViteConfig);
-	await buildWorker(viteConfig, serverViteConfig);
+	await buildWorker(viteConfig, serverViteConfig, htmlContent);
 };
 
 const buildClient = async (viteConfig: ResolvedConfig) => {
@@ -26,13 +29,6 @@ const buildClient = async (viteConfig: ResolvedConfig) => {
 		?? path.resolve(CWD, "dist");
 	const clientViteConfig = defineConfig({
 		mode,
-		resolve: {
-			alias: {
-				'react': path.resolve(__dirname, '../node_modules/react'),
-				'react-dom': path.resolve(__dirname, '../node_modules/react-dom'),
-				'process.env.NODE_ENV': mode
-			}
-		},
 		build: {
 			outDir: path.resolve(distDir, "client"),
 			ssrManifest: true,
@@ -78,6 +74,12 @@ const buildServer = async (
 		viteConfig.build?.outDir ?? path.resolve(CWD, "dist");
 	const entryFile = path.resolve(CWD, "src/entry.server.tsx");
 	const serverOutputFile = path.resolve(distDir, "server");
+	const htmlContent = JSON.stringify(
+		generateHtmlContent(
+			buildResult,
+			clientViteConfig
+		)
+	);
 	const serverViteConfig = {
 		publicDir: "",
 		ssr: {
@@ -99,12 +101,7 @@ const buildServer = async (
 					replace({
 						preventAssignment: true,
 						values: {
-							"process.SSR.html": JSON.stringify(
-								 	generateHtmlContent(
-									buildResult,
-									clientViteConfig
-								)
-							),
+							__HTML_CONTENT__: htmlContent
 						},
 					}),
 				],
@@ -113,7 +110,10 @@ const buildServer = async (
 		}
 	} as InlineConfig;
 	await build(serverViteConfig);
-	return serverViteConfig;
+	return {
+		serverViteConfig,
+		htmlContent
+	};
 };
 
 const generatePkgJson = async (
@@ -138,7 +138,8 @@ const generatePkgJson = async (
 
 const buildWorker = async (
 	viteConfig: ResolvedConfig,
-	serverViteConfig: InlineConfig
+	serverViteConfig: InlineConfig,
+	htmlContent: string
 ) => {
 	const outputFilePath = path.resolve(
 		viteConfig.build.outDir,
@@ -166,6 +167,7 @@ const buildWorker = async (
             )
           )
 				),
+				__HTML_CONTENT__: htmlContent
 			}),
 		],
 	});
