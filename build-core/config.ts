@@ -15,4 +15,4 @@ export const EXTERNAL_REACT = {
 		amd: 'react-dom'
 	}
 }
-export const mode = 'development'; // production | development
+export const mode = 'production'; // production | development

@@ -3,7 +3,12 @@ import { render } from '__SSR_SERVER__' // 构件时会将entry.server.ts文件�
 import mime from 'mime'
 import { getAssetFromKV, mapRequestToAsset } from '@cloudflare/kv-asset-handler'
 
-const renderMode = 'csr'; // esr;
+const enum RenderMode {
+  ESR = 'esr',
+  CSR = 'csr'
+}
+
+const renderMode: RenderMode = RenderMode.ESR; // esr;
 
 interface Request {
   cf: Record<string, unknown>;
@@ -28,7 +33,7 @@ async function handleRequest(event: any) {
   const request: Request = event.request;
   const mimeType = getResContentType(request);
   if (!mimeType) {
-    const content = renderMode === 'csr' ? await getCsrHtml() : await renderESR(request);
+    const content = renderMode === RenderMode.CSR ? await getCsrHtml() : await renderESR(request);
     return new Response(content, {
       headers: {
         "Content-Type": "text/html; charset=utf-8"
@@ -45,7 +50,10 @@ const renderESR = async (request: Request) => {
 
 const getCsrHtml = async () => {
   // @ts-ignore: 编译时替换
-  return __HTML_CONTENT__;
+  return __HTML_CONTENT__.replace(
+    '<!-- ssr-out-let -->',
+    `<div id="root"></div>`
+  );
 }
 
 const getAssetsResource = async (event: any) => {
