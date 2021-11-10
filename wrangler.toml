@@ -1,0 +1,16 @@
+name = "my-worker"
+workers_dev = true
+type = "javascript"
+compatibility_date = "2021-10-31"
+account_id=""
+
+[site]
+bucket = "dist/client"
+entry-point = "."
+
+[build]
+command = "npm run build"
+watch_dir = "dist/worker"
+
+[build.upload]
+format = "service-worker"
