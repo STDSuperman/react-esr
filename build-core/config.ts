@@ -1,6 +1,4 @@
-
 export const SERVER_OUTPUT_MODULE_PATH_NAME = "__SSR_SERVER__";
-export const CWD = process.cwd();
 export const EXTERNAL_REACT = {
 	react: {
 		root: 'React',

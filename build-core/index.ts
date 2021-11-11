@@ -7,7 +7,9 @@ import { build as esbuild } from "esbuild";
 import replace from "@rollup/plugin-replace";
 import { replace as esbuildReplace } from "esbuild-plugin-replace";
 import { checkRelativeModulePrefix, normalizePathSeparator } from "./helper";
-import { SERVER_OUTPUT_MODULE_PATH_NAME, CWD, mode } from './config'
+import { SERVER_OUTPUT_MODULE_PATH_NAME, mode } from './config'
+
+export const CWD = process.cwd();
 
 const start = async () => {
 	const viteConfig = await resolveConfig({}, "build", "production");
