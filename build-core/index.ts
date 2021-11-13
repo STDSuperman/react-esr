@@ -180,7 +180,7 @@ const generateHtmlContent = (
 	clientViteConfig: InlineConfig
 ) => {
 	let indexHtmlContent = fs
-		.readFileSync(path.resolve(CWD, "./index.html"))
+		.readFileSync(path.resolve(__dirname, "./template.html"))
 		.toString();
 
 	const assetDirPath = clientViteConfig?.build?.outDir || "/dist";

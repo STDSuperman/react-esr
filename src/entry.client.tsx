@@ -1,6 +1,7 @@
 import ReactDom from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
+import 'antd/dist/antd.css';
 import { routes } from './router'
 import { renderRoutes } from 'react-router-config'
 import { renderMode, RenderModeEnum } from '../global.config'

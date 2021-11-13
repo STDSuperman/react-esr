@@ -4,6 +4,7 @@ import { routes } from './router'
 import { matchRoutes } from 'react-router-config'
 
 export async function render(url: string, events: any) {
+  console.log(url)
   const { pathname } = new URL(url);
   const branch = matchRoutes(routes, pathname);
   const route = branch[0]?.route;

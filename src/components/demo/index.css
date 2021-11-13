@@ -1,0 +1,6 @@
+.body-container, .card {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  display: inline-block;
+}
