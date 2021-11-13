@@ -29,7 +29,7 @@ function App() {
 		<div className="App">
 			<Space direction="vertical" size={12}>
 				<img src={logo} className="App-logo" alt="logo" />
-				<p>Hello Vite + React!</p>
+				<h1>Hello Vite + React!</h1>
 				<Button type="primary" onClick={() => history.push("/about")}>
 					to about page
 				</Button>

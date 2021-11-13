@@ -17,10 +17,6 @@ if (!import.meta.env.SSR) {
 export const rootContext = createContext(Object.assign({}, getInitialData ?? {}));
 
 function App(props: IProps) {
-  const [count, setCount] = useState(0)
-  const globalValue = useContext(rootContext);
-  const history = useHistory();
-
   return (
       <div className="App">
         <Demo></Demo>

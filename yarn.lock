@@ -465,6 +465,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-helmet@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.npmmirror.com/@types/react-helmet/download/@types/react-helmet-6.1.4.tgz?cache=0&sync_timestamp=1634206250469&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Freact-helmet%2Fdownload%2F%40types%2Freact-helmet-6.1.4.tgz#3e54a3eb37ba7fb34ffafc64f425be4e68df03b9"
+  integrity sha1-PlSj6ze6f7NP+vxk9CW+TmjfA7k=
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-router-config@^5.0.3":
   version "5.0.3"
   resolved "https://registry.nlark.com/@types/react-router-config/download/@types/react-router-config-5.0.3.tgz?cache=0&sync_timestamp=1629709123097&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Freact-router-config%2Fdownload%2F%40types%2Freact-router-config-5.0.3.tgz#72a53561bcb5e13b82c576527b818fa2579591c7"
