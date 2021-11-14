@@ -82,6 +82,11 @@ const buildServer = async (
 			clientViteConfig
 		)
 	);
+	const skeletonContent = JSON.stringify(
+		fs.readFileSync(
+			path.resolve(__dirname, '../public/skeleton.html')
+		).toString()
+	);
 	const serverViteConfig = {
 		publicDir: "",
 		ssr: {
@@ -103,7 +108,8 @@ const buildServer = async (
 					replace({
 						preventAssignment: true,
 						values: {
-							__HTML_CONTENT__: htmlContent
+							__HTML_CONTENT__: htmlContent,
+							__SKELETON_HTML__: skeletonContent
 						},
 					}),
 				],
@@ -180,7 +186,7 @@ const generateHtmlContent = (
 	clientViteConfig: InlineConfig
 ) => {
 	let indexHtmlContent = fs
-		.readFileSync(path.resolve(__dirname, "./template.html"))
+		.readFileSync(path.resolve(__dirname, "../public/template.html"))
 		.toString();
 
 	const assetDirPath = clientViteConfig?.build?.outDir || "/dist";
