@@ -3,7 +3,7 @@
   "pageUrl": "http://127.0.0.1:8787/",
   "openRepeatList": true,
   "device": "iPhone X",
-  "minGrayBlockWidth": 80,
+  "minGrayBlockWidth": 0,
   "minGrayPseudoWidth": 10,
   "debug": true,
   "debugTime": 3000

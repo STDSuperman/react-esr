@@ -30,16 +30,18 @@ function App() {
 			<Space direction="vertical" size={12}>
 				<img src={logo} className="App-logo" alt="logo" />
 				<h1>Hello Vite + React!</h1>
-				<Button type="primary" onClick={() => history.push("/about")}>
-					to about page
-				</Button>
-				<Button
-					onClick={() => {
-						setCount((count: number) => count + 1);
-					}}
-				>
-					count is: {count}
-				</Button>
+				<Space direction="vertical" size={12} className="btn-group">
+					<Button onClick={() => history.push("/about")}>
+						to about page
+					</Button>
+					<Button
+						onClick={() => {
+							setCount((count: number) => count + 1);
+						}}
+					>
+						count is: {count}
+					</Button>
+				</Space>
 				<RangePicker />
 				<Rate allowHalf defaultValue={2.5} />
 			</Space>

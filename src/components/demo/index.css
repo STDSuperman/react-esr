@@ -4,3 +4,8 @@
   flex-direction: column;
   display: inline-block;
 }
+
+.btn-group {
+  border: solid 1px #ccc;
+  padding: 10px;
+}
