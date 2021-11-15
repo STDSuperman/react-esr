@@ -113,7 +113,9 @@ export const render = async (url: string) => {
 const getRemoveSkeletonScript = () => {
   return `
     <script>
-      window.SKELETON && SKELETON.destroy();
+      window.addEventListener('load', () => {
+        window.SKELETON && SKELETON.destroy();
+      })
     </script>
   `
 }
