@@ -58,7 +58,7 @@ const SSRRender = async (url: string) => {
   return template
     .replace(
       '<!-- ssr-out-let -->',
-      `<div id="root" data-server-rendered="true">${renderContent}</div>`
+      `${getRemoveSkeletonScript()}<div id="root" data-server-rendered="true">${renderContent}</div>`
     )
     .replace(
       '<!-- ssr-initial-data -->',
@@ -97,7 +97,7 @@ const writeSkeletonHtml = (
  * @param url
  * @returns
  */
-export async function render(url: string) {
+export const render = async (url: string) => {
   // 创建一个流
   const { writable, readable } = new TransformStream();
   const writer = writable.getWriter();
@@ -108,4 +108,12 @@ export async function render(url: string) {
   writeContentToStream(writer, await SSRRender(url));
   writer.close();
   return readable;
+}
+
+const getRemoveSkeletonScript = () => {
+  return `
+    <script>
+      window.SKELETON && SKELETON.destroy();
+    </script>
+  `
 }
