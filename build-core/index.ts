@@ -82,6 +82,7 @@ const buildServer = async (
 			clientViteConfig
 		)
 	);
+	// 读取骨架屏数据
 	const skeletonContent = JSON.stringify(
 		fs.readFileSync(
 			path.resolve(__dirname, '../public/skeleton.html')

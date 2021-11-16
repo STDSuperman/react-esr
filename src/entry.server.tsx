@@ -110,6 +110,10 @@ export const render = async (url: string) => {
   return readable;
 }
 
+/**
+ * 添加移除骨架逻辑
+ * @returns 
+ */
 const getRemoveSkeletonScript = () => {
   return `
     <script>
