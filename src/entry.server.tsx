@@ -118,7 +118,7 @@ const getRemoveSkeletonScript = () => {
   return `
     <script>
       window.addEventListener('load', () => {
-        window.SKELETON && SKELETON.destroy;
+        window.SKELETON && SKELETON.destroy();
       })
     </script>
   `
