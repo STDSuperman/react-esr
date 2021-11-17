@@ -58,11 +58,11 @@ const SSRRender = async (url: string) => {
   return template
     .replace(
       '<!-- ssr-out-let -->',
-      `${getRemoveSkeletonScript()}<div id="root" data-server-rendered="true">${renderContent}</div>`
+      `<div id="root" data-server-rendered="true">${renderContent}</div>`
     )
     .replace(
       '<!-- ssr-initial-data -->',
-      `<script>window.__INITIAL_STATE__=${JSON.stringify(initialData)}</script>`
+      `<script>window.__INITIAL_STATE__=${JSON.stringify(initialData)}</script>${getRemoveSkeletonScript()}`
     )
 }
 
