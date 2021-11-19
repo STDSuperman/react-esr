@@ -4,36 +4,49 @@
 ### 目录介绍
 
 ```shell
-├── LICENSE
-├── README.md
-├── build-core  // 构建相关
-│   ├── config.ts // 常量配置
-│   ├── helper.ts // 工具方法
-│   └── index.ts // 主逻辑
-├── index.html // 模板文件
-├── package.json
-├── pnpm-lock.yaml
-├── src // react项目代码
-│   ├── App.css
-│   ├── App.tsx
-│   ├── entry.client.tsx // 客户端入口文件
-│   ├── entry.server.tsx // server端入口文件
-│   ├── favicon.svg
-│   ├── index.css
-│   ├── index.d.ts
-│   ├── logo.svg
-│   ├── pages
-│   │   └── about
-│   │       └── index.tsx
-│   ├── router // 路由
-│   │   └── index.ts
-│   ├── utils
-│   │   └── index.ts
-│   └── vite-env.d.ts
-├── tsconfig.json
-├── vite.config.ts
-├── worker.ts // 边缘节点执行逻辑
-└── wrangler.toml // cloudflare配置文件
+├─global.config.ts  // 全局配置
+├─index.html  // vite 启动时模板 html
+├─LICENSE
+├─package.json
+├─README.md
+├─skeleton.config.json // 生成骨架屏配置，可忽略
+├─tsconfig.json
+├─vite.config.ts // vite 配置
+├─worker.ts  // Cloudflare Worker
+├─wrangler.toml  // Cloudflare 配置文件
+├─yarn.lock
+├─src
+|  ├─App.css
+|  ├─App.tsx
+|  ├─entry.client.tsx  // 客户端渲染入口文件
+|  ├─entry.server.tsx  // Server 端入口文件
+|  ├─favicon.svg
+|  ├─index.css
+|  ├─index.d.ts
+|  ├─vite-env.d.ts
+|  ├─utils
+|  |   └index.ts
+|  ├─router
+|  |   └index.ts
+|  ├─pages
+|  |   ├─about
+|  |   |   └index.tsx
+|  ├─components
+|  |     ├─demo
+|  |     |  ├─index.css
+|  |     |  ├─index.tsx
+|  |     |  └logo.svg
+├─skeleton-output  // 骨架屏数据
+|        ├─base64-ESR.txt
+|        ├─skeleton-ESR.html
+|        └skeleton-ESR.png
+├─public
+|   ├─skeleton.html
+|   └template.html // ESR 渲染模板
+├─build-core
+|     ├─config.ts // 构建时配置
+|     ├─helper.ts // 构建时工具方法
+|     └index.ts // 构建脚本
 ```
 
 ### 安装
@@ -43,7 +56,6 @@ npm i
 # or yarn
 # or pnpm i
 ```
-
 ### 起步
 
 这里我们如果想要开始调试的话需要改一下wrangler.toml文件。
