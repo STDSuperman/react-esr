@@ -16,14 +16,14 @@ const start = async () => {
 	const { clientViteConfig, buildResult } = await buildClient(viteConfig);
 	const {
 		serverViteConfig,
-		htmlContent
+		staticHtmlContent
 	} = await buildServer(
 		viteConfig,
 		buildResult as RollupOutput,
 		clientViteConfig
 	);
 	await generatePkgJson(viteConfig, clientViteConfig, serverViteConfig);
-	await buildWorker(viteConfig, serverViteConfig, htmlContent);
+	await buildWorker(viteConfig, serverViteConfig, staticHtmlContent);
 };
 
 const buildClient = async (viteConfig: ResolvedConfig) => {
@@ -76,12 +76,23 @@ const buildServer = async (
 		viteConfig.build?.outDir ?? path.resolve(CWD, "dist");
 	const entryFile = path.resolve(CWD, "src/entry.server.tsx");
 	const serverOutputFile = path.resolve(distDir, "server");
-	const htmlContent = JSON.stringify(
+	// 用以使用 renderString 方式一次性渲染的 html 模板
+	const staticHtmlContent = JSON.stringify(
 		generateHtmlContent(
 			buildResult,
-			clientViteConfig
+			clientViteConfig,
+			"../public/template.html"
 		)
 	);
+	// 用以 renderToNodeStream 方案模板数据
+	const streamHtmlContent = JSON.stringify(
+		generateHtmlContent(
+			buildResult,
+			clientViteConfig,
+			"../public/stream-template.html"
+		)
+	);
+
 	// 读取骨架屏数据
 	const skeletonContent = JSON.stringify(
 		fs.readFileSync(
@@ -109,7 +120,8 @@ const buildServer = async (
 					replace({
 						preventAssignment: true,
 						values: {
-							__HTML_CONTENT__: htmlContent,
+							__HTML_CONTENT__: staticHtmlContent,
+							__STREAM_HTML_CONTENT__: streamHtmlContent,
 							__SKELETON_HTML__: skeletonContent
 						},
 					}),
@@ -121,7 +133,7 @@ const buildServer = async (
 	await build(serverViteConfig);
 	return {
 		serverViteConfig,
-		htmlContent
+		staticHtmlContent
 	};
 };
 
@@ -184,10 +196,11 @@ const buildWorker = async (
 
 const generateHtmlContent = (
 	clientBuildResult: RollupOutput,
-	clientViteConfig: InlineConfig
+	clientViteConfig: InlineConfig,
+	templatePath: string,
 ) => {
 	let indexHtmlContent = fs
-		.readFileSync(path.resolve(__dirname, "../public/template.html"))
+		.readFileSync(path.resolve(__dirname, templatePath))
 		.toString();
 
 	const assetDirPath = clientViteConfig?.build?.outDir || "/dist";

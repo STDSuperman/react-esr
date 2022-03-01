@@ -67,6 +67,51 @@ const SSRRender = async (url: string) => {
 }
 
 /**
+ * 流式渲染 React
+ * @param writer
+ * @param content
+ */
+
+ const SSRRenderWithStream = async (
+  writer: WritableStreamDefaultWriter,
+  url: string) => {
+  const { pathname } = new URL(url);
+  const branch = matchRoutes(routes, pathname);
+  const route = branch[0]?.route;
+  const MatchedComponent = route?.component as any;
+  const initialData = MatchedComponent?.getInitialProps
+    ? await MatchedComponent?.getInitialProps(route)
+    : {}
+  const renderStream = ReactDOMServer.renderToString(
+    <StaticRouter location={url}>
+      <MatchedComponent data={initialData}/>
+    </StaticRouter>
+  )
+
+  // @ts-ignore
+  const template = __STREAM_HTML_CONTENT__;
+  // 写入数据
+  writeContentToStream(writer, template
+    .replace(
+      '<!-- ssr-initial-data -->',
+      `<script>window.__INITIAL_STATE__=${JSON.stringify(initialData)}</script>${getRemoveSkeletonScript()}`
+    )
+  );
+  writeContentToStream(writer, renderStream)
+  writeContentToStream(writer, `</div></body></html>`)
+  writer.close();
+
+  // renderStream.on('data', (chunk: string) => {
+  //   console.log(chunk)
+  //   writer.write(chunk);
+  // })
+  // renderStream.on('end', () => {
+  //   writer.write(`</div></body></html>`)
+  //   writer.close();
+  // })
+}
+
+/**
  * 将字符串写入流
  * @param writer
  * @param content
@@ -105,14 +150,15 @@ export const render = async (url: string) => {
   // 写入骨架
   writeSkeletonHtml(writer);
   // 写入动态渲染后的数据
-  writeContentToStream(writer, await SSRRender(url));
-  writer.close();
+  // writeContentToStream(writer, await SSRRender(url));
+  SSRRenderWithStream(writer, url);
+  // writer.close();
   return readable;
 }
 
 /**
  * 添加移除骨架逻辑
- * @returns 
+ * @returns
  */
 const getRemoveSkeletonScript = () => {
   return `
