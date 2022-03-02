@@ -82,7 +82,7 @@ const SSRRender = async (url: string) => {
   const initialData = MatchedComponent?.getInitialProps
     ? await MatchedComponent?.getInitialProps(route)
     : {}
-  const renderStream = ReactDOMServer.renderToString(
+  const renderString = ReactDOMServer.renderToString(
     <StaticRouter location={url}>
       <MatchedComponent data={initialData}/>
     </StaticRouter>
@@ -97,18 +97,9 @@ const SSRRender = async (url: string) => {
       `<script>window.__INITIAL_STATE__=${JSON.stringify(initialData)}</script>${getRemoveSkeletonScript()}`
     )
   );
-  writeContentToStream(writer, renderStream)
+  writeContentToStream(writer, renderString)
   writeContentToStream(writer, `</div></body></html>`)
   writer.close();
-
-  // renderStream.on('data', (chunk: string) => {
-  //   console.log(chunk)
-  //   writer.write(chunk);
-  // })
-  // renderStream.on('end', () => {
-  //   writer.write(`</div></body></html>`)
-  //   writer.close();
-  // })
 }
 
 /**
@@ -149,10 +140,12 @@ export const render = async (url: string) => {
 
   // 写入骨架
   writeSkeletonHtml(writer);
+
   // 写入动态渲染后的数据
   // writeContentToStream(writer, await SSRRender(url));
-  SSRRenderWithStream(writer, url);
   // writer.close();
+
+  SSRRenderWithStream(writer, url);
   return readable;
 }
 
